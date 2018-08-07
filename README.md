@@ -1,5 +1,7 @@
 # But You Promised
 
+[![CircleCI](https://circleci.com/gh/keirog/but-you-promised/tree/master.svg?style=svg)](https://circleci.com/gh/keirog/but-you-promised/tree/master)
+
 Call a promise-returning-function n times or until it resolves, otherwise reject.
 
 ## Usage
