@@ -19,5 +19,5 @@ butYouPromised(randomlyRejectingPromise, {
 	triesRemaining: 5
 }) 
 .then(() => console.log('It resolved, eventually'))
-.catch(() => console.log('It failed after a 5 attempts'));
+.catch(() => console.log('It failed after 5 attempts'));
 ```
