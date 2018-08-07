@@ -1,6 +1,6 @@
 {
   "name": "but-you-promised",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Retry a promise n times, with back-off options.",
   "main": "main.js",
   "scripts": {
