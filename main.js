@@ -12,10 +12,11 @@ module.exports = (func, options) => {
 	}
 
 	const attempt = () => {
+		settings.triesRemaining--;
+
 		return func(settings.data)
 			.catch(err => {
 				if (settings.triesRemaining) {
-					settings.triesRemaining--;
 					return attempt();
 				}
 

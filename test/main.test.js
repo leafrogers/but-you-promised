@@ -69,7 +69,7 @@ describe('#butYouPromised', () => {
 		butYouPromised(rejectStub)
 			.catch(() => {
 				try{
-					expect(rejectStub.callCount).to.equal(6);
+					expect(rejectStub.callCount).to.equal(5);
 					done();
 				} catch(err) {
 					done(err);
@@ -80,7 +80,7 @@ describe('#butYouPromised', () => {
 	it('calls the required function the expected number of times if it rejects with a non-error type', done => {
 		butYouPromised(rejectNoErrorStub).catch(() => {
 			try {
-				expect(rejectNoErrorStub.callCount).to.equal(6);
+				expect(rejectNoErrorStub.callCount).to.equal(5);
 				done();
 			} catch (err) {
 				done(err);
