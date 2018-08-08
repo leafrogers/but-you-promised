@@ -10,16 +10,36 @@ Call a promise-returning-function n times or until it resolves, otherwise reject
 const butYouPromised = require('but-you-promised');
 
 const randomlyRejectingPromise = () => {
-	const randomlyReject = Math.random() < 0.5;
+	const randomlyReject = Math.random() < 0.7;
+	
+	attemptsSoFar++;
+
+	console.log(`On attempt number ${attemptsSoFar}`);
+
 	return Promise[randomlyReject ? 'reject' : 'resolve']();
 };
 
+let attemptsSoFar = 0;
+
+const exponentialBackoff = ({ seedDelayInMs }) => {
+	return attemptsSoFar => {
+		const delayInMs = (attemptsSoFar * attemptsSoFar) * seedDelayInMs;
+
+		console.log(`⏳ Delaying by ${delayInMs} ms…`);
+
+		return delayInMs;
+	};
+};
+
 butYouPromised(randomlyRejectingPromise, {
+	backoffStrategy: exponentialBackoff({ // defaults to no delay, no backoff
+		seedDelayInMs: 1000
+	}),
 	data: {
 		parameter: 123
 	},
-	triesRemaining: 5
-}) 
+	triesRemaining: 10 // default is 5
+})
 .then(() => console.log('It resolved, eventually'))
-.catch(() => console.log('It failed after 5 attempts'));
+.catch(() => console.log('It failed after 10 attempts'));
 ```

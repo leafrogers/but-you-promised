@@ -98,4 +98,21 @@ describe('#butYouPromised', () => {
 			}
 		});
 	});
+
+	const exponentialDelay = ({ seedDelayInMs }) => {
+		return attemptsSoFar => (attemptsSoFar * attemptsSoFar) * seedDelayInMs;
+	};
+
+	it('allows a backoff strategy to be used when retrying', function () {
+		const startTime = Date.now();
+
+		return butYouPromised(rejectStub, {
+			backoffStrategy: exponentialDelay({ seedDelayInMs: 15 }),
+			triesRemaining: 4
+		}).catch(() => {
+			const timeDelta = Date.now() - startTime;
+			const expectedDelayFrom3Retries = 15 + 60 + 135;
+			expect(timeDelta).to.be.at.least(expectedDelayFrom3Retries);
+		});
+	});
 });
