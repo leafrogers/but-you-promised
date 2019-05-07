@@ -1,12 +1,16 @@
 {
   "name": "but-you-promised",
-  "version": "1.1.0",
+  "version": "0.0.0",
   "description": "Retry a promise n times, with back-off options.",
   "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keirog/but-you-promised.git"
+  },
   "scripts": {
+    "lint": "eslint **/*.js && echo \"Linting ✔︎\"",
     "test": "npm -s run unit-test && npm -s run lint",
-    "unit-test": "mocha && echo \"Unit testing ✔︎\"",
-    "lint": "eslint **/*.js && echo \"Linting ✔︎\""
+    "unit-test": "mocha && echo \"Unit testing ✔︎\""
   },
   "license": "MIT",
   "devDependencies": {

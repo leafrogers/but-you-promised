@@ -1,18 +1,64 @@
-version: 2
-jobs:
-  build:
+version: 2.0
+
+references:
+  default_container: &default_container
     docker:
-      - image: circleci/node:8.11.3
-    working_directory: ~/repo
+      - image: circleci/node:8
+  restore_repo: &restore_repo
+    restore_cache:
+      key: npm-cache-{{ checksum "package-lock.json" }}
+
+jobs:
+  checkout_and_install:
+    <<: *default_container
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
-      - run: npm -s i
+      - run: npm i
       - save_cache:
+          key: npm-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm -s test
+  lint:
+    <<: *default_container
+    steps:
+      - checkout
+      - *restore_repo
+      - run: npm run lint
+  node8:
+    <<: *default_container
+    steps:
+      - checkout
+      - *restore_repo
+      - run: npm run unit-test
+  node10:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - *restore_repo
+      - run: npm run unit-test
+  node12:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - *restore_repo
+      - run: npm run unit-test
+
+workflows:
+  version: 2
+  lint_and_test_node_versions:
+    jobs:
+      - checkout_and_install
+      - lint:
+          requires:
+            - checkout_and_install
+      - node8:
+          requires:
+            - checkout_and_install
+      - node10:
+          requires:
+            - checkout_and_install
+      - node12:
+          requires:
+            - checkout_and_install
