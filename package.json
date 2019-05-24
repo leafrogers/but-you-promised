@@ -1,7 +1,7 @@
 {
   "name": "but-you-promised",
   "version": "0.0.0",
-  "description": "Retry a promise n times, with back-off options.",
+  "description": "For when you don’t want your promises to give up on the first attempt (most commonly because of network failure).",
   "main": "main.js",
   "repository": {
     "type": "git",
@@ -26,5 +26,12 @@
   "engines": {
     "node": ">=8.0.0"
   },
+  "keywords": [
+    "async",
+    "backoff",
+    "fetch",
+    "promise",
+    "retry"
+  ],
   "license": "MIT"
 }
