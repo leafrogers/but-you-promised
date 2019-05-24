@@ -1,37 +1,41 @@
-'use strict';
-
-const defaults = {
-	backoffStrategy: () => 0,
-	triesRemaining: 5
+const exponentialBackOff = ({ seedDelayInMs }) => {
+	return attemptsSoFar => (attemptsSoFar * attemptsSoFar) * seedDelayInMs;
 };
 
-module.exports = (func, options) => {
-	const settings = Object.assign({}, defaults, options);
+const defaults = {
+	attemptsSoFar: 0,
+	backOffFunction: exponentialBackOff,
+	backOffSeedDelayInMs: 1000,
+	giveUpAfterAttempt: 5
+};
 
-	if (typeof func !== 'function') {
-		return Promise.reject(new Error(`The first parameter should be a function, but it was type ${typeof func}`));
+class ParameterError extends Error {}
+
+module.exports = (promiseReturningFunction, options) => {
+	const settings = { ...defaults, ...options };
+	const generateDelay = settings.backOffFunction({
+		seedDelayInMs: settings.backOffSeedDelayInMs
+	});
+
+	if (typeof promiseReturningFunction !== 'function') {
+		return () => Promise.reject(new ParameterError(`The first parameter should be a function, but it was type ${typeof func}`));
 	}
 
-	let attemptNum = 0;
+	const attempt = (...args) => {
+		settings.attemptsSoFar += 1;
 
-	const attempt = () => {
-		attemptNum++;
-		settings.triesRemaining--;
+		const handleSubsequentAttempts = resolve => setTimeout(
+			() => resolve(attempt(...args)),
+			generateDelay(settings.attemptsSoFar)
+		);
 
-		return func(settings.data)
-			.catch(err => {
-				if (settings.triesRemaining) {
-					return new Promise(resolve => {
-						setTimeout(
-							() => resolve(attempt()),
-							settings.backoffStrategy(attemptNum)
-						);
-					});
-				};
+		const handleRejection = err => (
+			(settings.attemptsSoFar < settings.giveUpAfterAttempt)
+				? new Promise(handleSubsequentAttempts) : Promise.reject(err)
+		);
 
-				return Promise.reject(err);
-			});
+		return promiseReturningFunction(...args).catch(handleRejection);
 	};
 
-	return attempt();
+	return attempt;
 };
