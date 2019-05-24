@@ -1,22 +1,37 @@
 {
   "name": "but-you-promised",
   "version": "0.0.0",
-  "description": "Retry a promise n times, with back-off options.",
+  "description": "For when you don’t want your promises to give up on the first attempt (most commonly because of network failure).",
   "main": "main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/keirog/but-you-promised.git"
   },
   "scripts": {
-    "lint": "eslint **/*.js && echo \"Linting ✔︎\"",
+    "lint": "eslint ./ && echo \"Linting ✔︎\"",
     "test": "npm -s run unit-test && npm -s run lint",
     "unit-test": "mocha && echo \"Unit testing ✔︎\""
   },
-  "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.13.0",
-    "mocha": "^5.2.0",
-    "sinon": "^7.2.3"
-  }
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "mocha": "^6.1.4",
+    "sinon": "^7.3.2",
+    "sinon-chai": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "keywords": [
+    "async",
+    "backoff",
+    "fetch",
+    "promise",
+    "retry"
+  ],
+  "license": "MIT"
 }
