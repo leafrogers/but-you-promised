@@ -4,7 +4,6 @@ const { expect } = require('chai')
 const sinon = require('sinon');
 const butYouPromised = require('../main');
 
-
 describe('But you promised', () => {
 	const stubs = {};
 	const noOp = () => {};
@@ -26,6 +25,7 @@ describe('But you promised', () => {
 			clock.tick(1000);
 		}, 1);
 	});
+
 	afterEach(() => {
 		clock.restore();
 		clearInterval(timeRocket);
@@ -255,6 +255,40 @@ describe('But you promised', () => {
 			});
 
 			wrappedFunction().catch(noOp);
+		});
+
+		it('allows an onFulfilled predicate function to be passed in', () => {
+			const onFulfilledStub = sinon.stub();
+
+			stubs.resolvingPromise.resolves('hello');
+
+			const wrappedFunction = butYouPromised(stubs.resolvingPromise, {
+				onFulfilled: onFulfilledStub
+			});
+
+			return wrappedFunction()
+				.then(() => expect(onFulfilledStub).to.have.been.calledOnceWithExactly('hello'));
+		});
+
+		it('allows an onRejected predicate function to be passed in', () => {
+			const onRejectedStub = sinon.stub();
+			const err = new Error('oh dear');
+
+			stubs.rejectingPromise.rejects(err);
+
+			const wrappedFunction = butYouPromised(stubs.rejectingPromise, {
+				onRejected: (error) => {
+					onRejectedStub(error);
+					throw error;
+				}
+			});
+
+			return wrappedFunction()
+				.then(makeSureWeAlwaysGetToCatch)
+				.catch(() => {
+					expect(onRejectedStub.callCount).to.equal(5);
+					expect(onRejectedStub).to.be.always.been.calledWithExactly(err);
+				});
 		});
 	});
 
