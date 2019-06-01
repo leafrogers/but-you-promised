@@ -33,6 +33,8 @@ A function that returns [a promise](https://developer.mozilla.org/en-US/docs/Web
 
 `options` _optional object_
 
+An object that can be passed-in to override default settings.
+
 - `giveUpAfterAttempt` _optional integer, the default is 5_
 
 	An integer that sets the maximum number of times `yourFunction` will be called before rejecting. The number set here will only ever be reached if your function’s promise consistently rejects.
@@ -54,6 +56,48 @@ A function that returns [a promise](https://developer.mozilla.org/en-US/docs/Web
 	```js
 	createBackOffFunction: () => () => 0
 	```
+
+- `onFulfilled` _optional function, the default is a no-op function (but passes the result through)_
+
+	A function that will be called internally if `yourFunction`’s promise is fulfilled. This is useful if you want to override what is deemed a successful scenario, such as a network request that returns a 500 response.
+
+	### Example custom onFulfilled function
+
+	```js
+	onFulfilled: (result = {}) => {
+		if (result.status > 500) {
+			throw new Error(`Received a server error ${result.status}`);
+		}
+
+		return result;
+	}
+	```
+
+- `onRejected` _optional function, the default is a no-op function (well, kinda—it rethrows the received error)_
+
+	A function that will be called internally every time `yourFunction`’s promise is rejected (if at all). This is useful if you want to override what is deemed a failure scenario, or if you want to log attempts.
+
+	*Note that you should rethrow the error passed into this function if you want to trigger another attempt (unless the `giveUpAfterAttempt` number has been reached).*
+
+	### Example custom onRejected function for logging
+
+	```js
+	onRejected: (err) => {
+		console.error(`Failed to do the thing. Got this error message: ${err.message}`);
+		throw err; // replay error to trigger subsequent attempts
+	}
+	```
+
+	### Example custom onRejected function to avoid multiple attempts for certain scenarios
+
+	```js
+	onRejected: (err) => {
+		if (err.status >= 500) { // If the error is not expected to change with multiple attempts (in this case if an HTTP network response code is, say, 404 (not found), subsequent attempts are not helpful)
+			throw err; // replay error to trigger subsequent attempts
+		}
+	}
+	```
+
 
 ## Return value
 
