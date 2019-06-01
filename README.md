@@ -9,13 +9,13 @@ Pass in a promise-returning function (X), get a wrapped function back that calls
 ## Contents
 
 - [Syntax](#syntax)
-- [Parameters](#parameters)
-	- [Example custom back-off function](#example-custom-back-off-function)
-	- [If you don’t want a back-off](#if-you-dont-want-a-back-off)
-	- [Example custom onFulfilled function](#example-custom-onfulfilled-function)
-	- [Example custom onRejected function for logging](#example-custom-onrejected-function-for-logging)
-	- [Example custom onRejected function to avoid multiple attempts](#example-custom-onrejected-function-to-avoid-multiple-attempts-for-certain-scenarios)
-- [Return value](#return-value)
+	- [Parameters](#parameters)
+		- [Example custom back-off function](#example-custom-back-off-function)
+		- [If you don’t want a back-off](#if-you-dont-want-a-back-off)
+		- [Example custom onFulfilled function](#example-custom-onfulfilled-function)
+		- [Example custom onRejected function for logging](#example-custom-onrejected-function-for-logging)
+		- [Example custom onRejected function to avoid multiple attempts](#example-custom-onrejected-function-to-avoid-multiple-attempts-for-certain-scenarios)
+	- [Return value](#return-value)
 - [Installation](#installation)
 - [Usage](#usage)
 	- [With promises](#with-promises)
@@ -29,7 +29,7 @@ Pass in a promise-returning function (X), get a wrapped function back that calls
 
 `butYouPromised(yourFunction[, options])`
 
-## Parameters
+### Parameters
 
 `yourFunction` _required function_
 
@@ -47,7 +47,7 @@ An object that can be passed-in to override default settings.
 
 	A function used internally to create a back-off strategy between attempts, when first wrapping `yourFunction`. When called, `createBackOffFunction` should return a new function (let’s call it Y here for clarity). Y should return an integer and will be called after each failed attempt, in order to determine the minimum number of milliseconds to wait before another attempt (unless `giveUpAfterAttempt` has been reached). Y will be called internally with one parameter, which is a count of how many attempts have been made so far. This gives you flexibility to define how your subsequent attempts are made.
 
-	### Example custom back-off function
+	#### Example custom back-off function
 
 	```js
 	createBackOffFunction: ({ seedDelayInMs }) => {
@@ -55,7 +55,7 @@ An object that can be passed-in to override default settings.
 	}
 	```
 
-	### If you don’t want a back-off
+	#### If you don’t want a back-off
 
 	```js
 	createBackOffFunction: () => () => 0
@@ -65,7 +65,7 @@ An object that can be passed-in to override default settings.
 
 	A function that will be called internally if `yourFunction`’s promise is fulfilled. This is useful if you want to override what is deemed a successful scenario, such as a network request that returns a 500 response.
 
-	### Example custom onFulfilled function
+	#### Example custom onFulfilled function
 
 	```js
 	onFulfilled: (result = {}) => {
@@ -83,7 +83,7 @@ An object that can be passed-in to override default settings.
 
 	*Note that you should rethrow the error passed into this function if you want to trigger another attempt (unless the `giveUpAfterAttempt` number has been reached).*
 
-	### Example custom onRejected function for logging
+	#### Example custom onRejected function for logging
 
 	```js
 	onRejected: (err) => {
@@ -92,7 +92,7 @@ An object that can be passed-in to override default settings.
 	}
 	```
 
-	### Example custom onRejected function to avoid multiple attempts for certain scenarios
+	#### Example custom onRejected function to avoid multiple attempts for certain scenarios
 
 	```js
 	onRejected: (err) => {
@@ -103,7 +103,7 @@ An object that can be passed-in to override default settings.
 	```
 
 
-## Return value
+### Return value
 
 Always returns a `function` that will return a promise when called.
 
