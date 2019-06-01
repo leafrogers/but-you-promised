@@ -6,7 +6,11 @@ const defaults = {
 	attemptsSoFar: 0,
 	backOffFunction: exponentialBackOff,
 	backOffSeedDelayInMs: 1000,
-	giveUpAfterAttempt: 5
+	giveUpAfterAttempt: 5,
+	onFulfilled: () => {},
+	onRejected: (err) => {
+		throw err;
+	}
 };
 
 class ParameterError extends Error {}
@@ -34,7 +38,10 @@ module.exports = (promiseReturningFunction, options) => {
 				? new Promise(handleSubsequentAttempts) : Promise.reject(err)
 		);
 
-		return promiseReturningFunction(...args).catch(handleRejection);
+		return promiseReturningFunction(...args)
+			.then(settings.onFulfilled)
+			.catch(settings.onRejected)
+			.catch(handleRejection);
 	};
 
 	return attempt;
