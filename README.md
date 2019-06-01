@@ -29,7 +29,7 @@ Pass in a promise-returning function (X), get a wrapped function back that calls
 
 `butYouPromised(yourFunction[, options])`
 
-## Parameters
+### Parameters
 
 `yourFunction` _required function_
 
@@ -103,7 +103,7 @@ An object that can be passed-in to override default settings.
 	```
 
 
-## Return value
+### Return value
 
 Always returns a `function` that will return a promise when called.
 
