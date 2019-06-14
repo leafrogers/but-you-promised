@@ -7,7 +7,7 @@ const defaults = {
 	backOffFunction: exponentialBackOff,
 	backOffSeedDelayInMs: 1000,
 	giveUpAfterAttempt: 5,
-	onFulfilled: () => {},
+	onFulfilled: result => result,
 	onRejected: (err) => {
 		throw err;
 	}
