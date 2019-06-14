@@ -43,6 +43,19 @@ An object that can be passed-in to override default settings.
 
 	An integer that sets the maximum number of times `yourFunction` will be called before rejecting. The number set here will only ever be reached if your function’s promise consistently rejects.
 
+- `backOffSeedDelayInMs` _optional integer, the default is 1000_
+
+	An integer that sets the back off delayed seed in milliseconds. This can be used to set the delay when omitting the default `createBackOffFunction`
+
+	### Example with default back-off function
+
+	```js
+	const wrappedFunction = butYouPromised(yourFunction, {
+		backOffSeedDelayInMs: 2000,
+		giveUpAfterAttempt: 10
+	});
+	```
+
 - `createBackOffFunction` _optional function, the default creates an exponential delay function_
 
 	A function used internally to create a back-off strategy between attempts, when first wrapping `yourFunction`. When called, `createBackOffFunction` should return a new function (let’s call it Y here for clarity). Y should return an integer and will be called after each failed attempt, in order to determine the minimum number of milliseconds to wait before another attempt (unless `giveUpAfterAttempt` has been reached). Y will be called internally with one parameter, which is a count of how many attempts have been made so far. This gives you flexibility to define how your subsequent attempts are made.
