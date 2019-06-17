@@ -163,6 +163,16 @@ describe('But you promised', () => {
 				});
 		});
 
+		it('passes-through result for onFulfilled by default', () => {
+			const expectedResult = { status: 200 };
+			const resolvingPromiseResult = sinon.stub().resolves(expectedResult);
+			const wrappedFunction = butYouPromised(resolvingPromiseResult);
+
+			return wrappedFunction().then((result) => {
+				expect(result).to.deep.equal(expectedResult);
+			});
+		});
+
 		it('uses an exponentional back-off strategy by default', (done) => {
 			const wrappedFunction = butYouPromised(stubs.rejectingPromise);
 			const expectedDelays = [0, 1000, 5000, 14000, 30000];
