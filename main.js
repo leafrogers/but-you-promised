@@ -16,33 +16,35 @@ const defaults = {
 class ParameterError extends Error {}
 
 module.exports = (promiseReturningFunction, options) => {
-	const settings = { ...defaults, ...options };
-	const generateDelay = settings.backOffFunction({
-		seedDelayInMs: settings.backOffSeedDelayInMs
-	});
-
 	if (typeof promiseReturningFunction !== 'function') {
 		return () => Promise.reject(new ParameterError(`The first parameter should be a function, but it was type ${typeof func}`));
 	}
 
-	const attempt = (...args) => {
-		settings.attemptsSoFar += 1;
+	return (...args) => {
+		const settings = { ...defaults, ...options };
+		const generateDelay = settings.backOffFunction({
+			seedDelayInMs: settings.backOffSeedDelayInMs
+		});
 
-		const handleSubsequentAttempts = resolve => setTimeout(
-			() => resolve(attempt(...args)),
-			generateDelay(settings.attemptsSoFar)
-		);
+		const attempt = (...attemptArgs) => {
+			settings.attemptsSoFar += 1;
 
-		const handleRejection = err => (
-			(settings.attemptsSoFar < settings.giveUpAfterAttempt)
-				? new Promise(handleSubsequentAttempts) : Promise.reject(err)
-		);
+			const handleSubsequentAttempts = resolve => setTimeout(
+				() => resolve(attempt(...attemptArgs)),
+				generateDelay(settings.attemptsSoFar)
+			);
 
-		return promiseReturningFunction(...args)
-			.then(settings.onFulfilled)
-			.catch(settings.onRejected)
-			.catch(handleRejection);
+			const handleRejection = err => (
+				(settings.attemptsSoFar < settings.giveUpAfterAttempt)
+					? new Promise(handleSubsequentAttempts) : Promise.reject(err)
+			);
+
+			return promiseReturningFunction(...args)
+				.then(settings.onFulfilled)
+				.catch(settings.onRejected)
+				.catch(handleRejection);
+		};
+
+		return attempt(...args);
 	};
-
-	return attempt;
 };
