@@ -1,5 +1,5 @@
 const exponentialBackOff = ({ seedDelayInMs }) => {
-	return attemptsSoFar => (attemptsSoFar * attemptsSoFar) * seedDelayInMs;
+	return (attemptsSoFar) => (attemptsSoFar * attemptsSoFar) * seedDelayInMs;
 };
 
 const defaults = {
@@ -7,7 +7,7 @@ const defaults = {
 	backOffFunction: exponentialBackOff,
 	backOffSeedDelayInMs: 1000,
 	giveUpAfterAttempt: 5,
-	onFulfilled: result => result,
+	onFulfilled: (result) => result,
 	onRejected: (err) => {
 		throw err;
 	}
@@ -29,12 +29,12 @@ module.exports = (promiseReturningFunction, options) => {
 		const attempt = (...attemptArgs) => {
 			settings.attemptsSoFar += 1;
 
-			const handleSubsequentAttempts = resolve => setTimeout(
+			const handleSubsequentAttempts = (resolve) => setTimeout(
 				() => resolve(attempt(...attemptArgs)),
 				generateDelay(settings.attemptsSoFar)
 			);
 
-			const handleRejection = err => (
+			const handleRejection = (err) => (
 				(settings.attemptsSoFar < settings.giveUpAfterAttempt)
 					? new Promise(handleSubsequentAttempts) : Promise.reject(err)
 			);
