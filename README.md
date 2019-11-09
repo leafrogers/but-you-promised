@@ -1,10 +1,12 @@
 # But you promised 😢
 
-[![CircleCI build status](https://img.shields.io/circleci/build/github/keirog/but-you-promised.svg)](https://circleci.com/gh/keirog/but-you-promised/tree/master) ![Node support](https://img.shields.io/node/v/but-you-promised.svg) [![MIT license](https://img.shields.io/badge/license-MIT-green.svg)](#license)
+[![CircleCI build status](https://img.shields.io/circleci/build/github/keirog/but-you-promised.svg)](https://circleci.com/gh/keirog/but-you-promised/tree/master) ![Node support](https://img.shields.io/node/v/but-you-promised.svg) [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
 For when you don’t want your promises to give up on the first attempt (most commonly because of network failure).
 
 Pass in a promise-returning function (X), get a wrapped function back that calls X until it fulfills/resolves, or until 5 attempts have been made. Exponential back-off by default, highly configurable, no dependencies.
+
+[Skip to usage](#usage)
 
 ## Contents
 
@@ -21,9 +23,8 @@ Pass in a promise-returning function (X), get a wrapped function back that calls
 	- [With promises](#with-promises)
 	- [With async/await](#with-asyncawait)
 - [Things to bear in mind](#things-to-bear-in-mind)
-- [Migration guide](#migration-guide)
-	- [Upgrading from v1.x.x to v2.x.x](#upgrading-from-v1xx-to-v2xx)
-- [Licence](#licence)
+- [Migration guide](MIGRATION.md)
+- [License](#license)
 
 ## Syntax
 
@@ -189,48 +190,6 @@ After:
 - It’s worth making sure that `yourFunction` doesn’t already make multiple attempts if a promise rejects (for example if you’re wrapping a third-party function), else you may make more network calls than you’re intending!
 - If you’re using this software as part of an ongoing web request, consider using a custom back-off function (which delays exponentially by default), or reducing the default number of attempts (5), otherwise the original request may time out.
 
-## Migration guide
-
-### Upgrading from v1.x.x to v2.x.x
-
-- Calling `butYouPromised` now returns a function wrapper for `yourFunction`
-- No more passing your parameters in an awkward options.data object—use the returning function wrapper as you normally would use `yourFunction`
-- optional overrides are passed in via an options object when wrapping `yourFunction`, where:
-	-  `backoffStrategy` becomes `createBackOffFunction`
-	- `triesRemaining` becomes `giveUpAfterAttempt`
-
-```js
-// v1 / Before
-const yourParameterObj = { example: 123 };
-
-butYouPromised(yourFunction, {
-	backoffStrategy: ({ seedDelayInMs }) => {
-		return attemptsSoFar => (attemptsSoFar * attemptsSoFar) * seedDelayInMs;
-	},
-	data: yourParameterObj,
-	triesRemaining: 10
-})
-	.then(yourThenHandler)
-	.catch(yourCatchHandler);
-```
-```js
-// v2 / After
-const yourParameterObj = { example: 123 };
-
-const wrappedFunction = butYouPromised(yourFunction, {
-	// If this is the back-off strategy you’re using, you can omit this now as it’s the default :-)
-	createBackOffFunction: ({ seedDelayInMs }) => {
-		return attemptsSoFar => (attemptsSoFar * attemptsSoFar) * seedDelayInMs;
-	},
-	giveUpAfterAttempt: 10
-});
-
-wrappedFunction(yourParameterObj)
-	.then(yourThenHandler)
-	.catch(yourCatchHandler);
-```
-
 ## License
 
-Published under the [MIT license](http://opensource.org/licenses/MIT).
-
+Licensed under the [Lesser General Public License (LGPL-3.0)](LICENSE).

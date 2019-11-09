@@ -31,7 +31,8 @@
     "backoff",
     "fetch",
     "promise",
+    "retries",
     "retry"
   ],
-  "license": "MIT"
+  "license": "LGPL-3.0"
 }
