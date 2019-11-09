@@ -1,6 +1,6 @@
 # But you promised 😢
 
-[![CircleCI build status](https://img.shields.io/circleci/build/github/keirog/but-you-promised.svg)](https://circleci.com/gh/keirog/but-you-promised/tree/master) ![Node support](https://img.shields.io/node/v/but-you-promised.svg) [![MIT license](https://img.shields.io/badge/license-MIT-green.svg)](#license)
+[![CircleCI build status](https://img.shields.io/circleci/build/github/keirog/but-you-promised.svg)](https://circleci.com/gh/keirog/but-you-promised/tree/master) ![Node support](https://img.shields.io/node/v/but-you-promised.svg) [![LGPL-3.0 licensed][shield-license]](#license)
 
 For when you don’t want your promises to give up on the first attempt (most commonly because of network failure).
 
@@ -23,7 +23,7 @@ Pass in a promise-returning function (X), get a wrapped function back that calls
 - [Things to bear in mind](#things-to-bear-in-mind)
 - [Migration guide](#migration-guide)
 	- [Upgrading from v1.x.x to v2.x.x](#upgrading-from-v1xx-to-v2xx)
-- [Licence](#licence)
+- [License](#license)
 
 ## Syntax
 
@@ -232,5 +232,4 @@ wrappedFunction(yourParameterObj)
 
 ## License
 
-Published under the [MIT license](http://opensource.org/licenses/MIT).
-
+Licensed under the [Lesser General Public License (LGPL-3.0)](LICENSE).
