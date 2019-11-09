@@ -6,6 +6,8 @@ For when you don’t want your promises to give up on the first attempt (most co
 
 Pass in a promise-returning function (X), get a wrapped function back that calls X until it fulfills/resolves, or until 5 attempts have been made. Exponential back-off by default, highly configurable, no dependencies.
 
+[Skip to usage](#usage)
+
 ## Contents
 
 - [Syntax](#syntax)
