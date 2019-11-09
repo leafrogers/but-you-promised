@@ -21,8 +21,7 @@ Pass in a promise-returning function (X), get a wrapped function back that calls
 	- [With promises](#with-promises)
 	- [With async/await](#with-asyncawait)
 - [Things to bear in mind](#things-to-bear-in-mind)
-- [Migration guide](#migration-guide)
-	- [Upgrading from v1.x.x to v2.x.x](#upgrading-from-v1xx-to-v2xx)
+- [Migration guide](MIGRATION.md)
 - [License](#license)
 
 ## Syntax
