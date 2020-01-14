@@ -17,7 +17,7 @@ class ParameterError extends Error {}
 
 module.exports = (promiseReturningFunction, options) => {
 	if (typeof promiseReturningFunction !== 'function') {
-		return () => Promise.reject(new ParameterError(`The first parameter should be a function, but it was type ${typeof func}`));
+		return () => Promise.reject(new ParameterError(`The first parameter should be a function, but it was type ${typeof promiseReturningFunction}`));
 	}
 
 	return (...args) => {
