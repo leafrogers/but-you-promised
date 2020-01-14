@@ -2,9 +2,7 @@
 
 [![CircleCI build status](https://img.shields.io/circleci/build/github/keirog/but-you-promised.svg)](https://circleci.com/gh/keirog/but-you-promised/tree/master) ![Node support](https://img.shields.io/node/v/but-you-promised.svg) [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
-For when you don’t want your promises to give up on the first attempt (most commonly because of network failure).
-
-Pass in a promise-returning function (X), get a wrapped function back that calls X until it fulfills/resolves, or until 5 attempts have been made. Exponential back-off by default, highly configurable, no dependencies.
+Zero-dependency promise retries. Exponential back-off by default, and highly configurable.
 
 [Skip to usage](#usage)
 
