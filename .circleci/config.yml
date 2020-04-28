@@ -65,6 +65,13 @@ jobs:
       - checkout
       - *restore_repo
       - run: npm run unit-test
+  node14:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - *restore_repo
+      - run: npm run unit-test
 
 workflows:
   version: 2
@@ -90,6 +97,9 @@ workflows:
           requires:
             - checkout_and_install
       - node13:
+          requires:
+            - checkout_and_install
+      - node14:
           requires:
             - checkout_and_install
 
