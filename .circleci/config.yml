@@ -3,7 +3,7 @@ version: 2.0
 references:
   default_container: &default_container
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:12
   restore_repo: &restore_repo
     restore_cache:
       key: npm-cache-{{ checksum "package-lock.json" }}
@@ -25,7 +25,8 @@ jobs:
       - *restore_repo
       - run: npm run lint
   node8:
-    <<: *default_container
+    docker:
+      - image: circleci/node:8
     steps:
       - checkout
       - *restore_repo
@@ -52,8 +53,7 @@ jobs:
       - *restore_repo
       - run: npm run unit-test
   node12:
-    docker:
-      - image: circleci/node:12
+    <<: *default_container
     steps:
       - checkout
       - *restore_repo
