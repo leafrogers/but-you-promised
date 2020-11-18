@@ -4,7 +4,14 @@
 
 Zero-dependency promise retries. Exponential back-off by default, and highly configurable.
 
-[Skip to usage](#usage)
+## [TL;DR](https://en.wikipedia.org/wiki/Wikipedia:Too_long;_didn%27t_read)
+
+```js
+const { yourPromiseReturningFunction } = require('./your-module');
+const yourFunctionWithRetry = require('but-you-promised')(yourPromiseReturningFunction);
+```
+
+Now use `yourFunctionWithRetry` exactly how you would use `yourPromiseReturningFunction`, except now when you call it, up to 5 attempts will be made if the promise rejects.
 
 ## Contents
 
@@ -119,10 +126,9 @@ An object that can be passed-in to override default settings.
 
 Always returns a `function` that will return a promise when called.
 
-## Installation
+## Installation via npm
 
-- via [npm](https://www.npmjs.com/get-npm): `npm install but-you-promised`
-- via [yarn](): `yarn add but-you-promised`
+Run `npm install but-you-promised` in your terminal.
 
 ## Usage
 
