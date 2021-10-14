@@ -26,25 +26,25 @@ module.exports = (promiseReturningFunction, options) => {
 			seedDelayInMs: settings.backOffSeedDelayInMs
 		});
 
-		const attempt = (...attemptArgs) => {
+		const handleSubsequentAttempts = (resolve) => setTimeout(
+			// eslint-disable-next-line no-use-before-define
+			() => resolve(attempt()),
+			generateDelay(settings.attemptsSoFar)
+		);
+
+		const handleRejection = (err) => (
+			(settings.attemptsSoFar < settings.giveUpAfterAttempt)
+				? new Promise(handleSubsequentAttempts) : Promise.reject(err)
+		);
+
+		const attempt = () => {
 			settings.attemptsSoFar += 1;
 
-			const handleSubsequentAttempts = (resolve) => setTimeout(
-				() => resolve(attempt(...attemptArgs)),
-				generateDelay(settings.attemptsSoFar)
-			);
-
-			const handleRejection = (err) => (
-				(settings.attemptsSoFar < settings.giveUpAfterAttempt)
-					? new Promise(handleSubsequentAttempts) : Promise.reject(err)
-			);
-
 			return promiseReturningFunction(...args)
-				.then(settings.onFulfilled)
-				.catch(settings.onRejected)
+				.then(settings.onFulfilled, settings.onRejected)
 				.catch(handleRejection);
 		};
 
-		return attempt(...args);
+		return attempt();
 	};
 };
