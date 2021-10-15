@@ -1,6 +1,6 @@
 {
   "name": "but-you-promised",
-  "version": "0.0.0",
+  "version": "2.1.9",
   "description": "For when you don’t want your promises to give up on the first attempt (most commonly because of network failure).",
   "main": "main.js",
   "repository": {
