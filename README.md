@@ -1,6 +1,6 @@
 # But you promised 😢
 
-[![CircleCI build status](https://img.shields.io/circleci/build/github/leafrogers/but-you-promised.svg)](https://circleci.com/gh/leafrogers/but-you-promised/tree/master) ![Node support](https://img.shields.io/node/v/but-you-promised.svg) [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+[![CircleCI build status](https://img.shields.io/circleci/build/github/leafrogers/but-you-promised.svg)](https://circleci.com/gh/leafrogers/but-you-promised/tree/main) ![Node support](https://img.shields.io/node/v/but-you-promised.svg) [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
 Zero-dependency promise retries. Exponential back-off by default, and highly configurable.
 
