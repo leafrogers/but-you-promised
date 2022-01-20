@@ -31,23 +31,9 @@ jobs:
       - checkout
       - *restore_repo
       - run: npm run unit-test
-  node9:
-    docker:
-      - image: circleci/node:9
-    steps:
-      - checkout
-      - *restore_repo
-      - run: npm run unit-test
   node10:
     docker:
       - image: circleci/node:10
-    steps:
-      - checkout
-      - *restore_repo
-      - run: npm run unit-test
-  node11:
-    docker:
-      - image: circleci/node:11
     steps:
       - checkout
       - *restore_repo
@@ -59,22 +45,22 @@ jobs:
       - checkout
       - *restore_repo
       - run: npm run unit-test
-  node13:
+  node14:
     docker:
-      - image: circleci/node:13
+      - image: circleci/node:14
     steps:
       - checkout
       - *restore_repo
       - run: npm run unit-test
-  node14:
+  node16:
     <<: *default_container
     steps:
       - checkout
       - *restore_repo
       - run: npm run unit-test
-  node15:
+  node17:
     docker:
-      - image: circleci/node:15
+      - image: circleci/node:17
     steps:
       - checkout
       - *restore_repo
@@ -91,24 +77,18 @@ workflows:
       - node8:
           requires:
             - checkout_and_install
-      - node9:
-          requires:
-            - checkout_and_install
       - node10:
-          requires:
-            - checkout_and_install
-      - node11:
           requires:
             - checkout_and_install
       - node12:
           requires:
             - checkout_and_install
-      - node13:
-          requires:
-            - checkout_and_install
       - node14:
           requires:
             - checkout_and_install
-      - node15:
+      - node16:
+          requires:
+            - checkout_and_install
+      - node17:
           requires:
             - checkout_and_install
