@@ -300,6 +300,23 @@ describe('But you promised', () => {
 					expect(onRejectedStub).to.be.always.been.calledWithExactly(err);
 				});
 		});
+
+		// This is useful if you wanted your function to never reject, and rather
+		// return an object like { isError: true, … }
+		it('calls onRejected if a custom onFulfilled function throws an error', (done) => {
+			const fakeFetch = () => Promise.resolve();
+			const customOptions = {
+				giveUpAfterAttempt: 1,
+				onFulfilled: () => {
+					throw new Error('This should get swallowed by onRejected.');
+				},
+				onRejected: () => done()
+			};
+
+			const fakeMultiFetch = butYouPromised(fakeFetch, customOptions);
+
+			fakeMultiFetch();
+		});
 	});
 
 	describe('Behaviour of multiple attempts', () => {

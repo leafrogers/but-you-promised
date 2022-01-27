@@ -41,7 +41,8 @@ module.exports = (promiseReturningFunction, options) => {
 			settings.attemptsSoFar += 1;
 
 			return promiseReturningFunction(...args)
-				.then(settings.onFulfilled, settings.onRejected)
+				.then(settings.onFulfilled)
+				.catch(settings.onRejected)
 				.catch(handleRejection);
 		};
 
