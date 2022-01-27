@@ -5,7 +5,7 @@
   "main": "main.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/keirog/but-you-promised.git"
+    "url": "git+https://github.com/leafrogers/but-you-promised.git"
   },
   "scripts": {
     "lint": "eslint ./ && echo \"Linting ✔︎\"",
